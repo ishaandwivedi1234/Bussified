@@ -26,7 +26,7 @@ SECRET_KEY = 'euj37%^)ho(moo6$c9ybgb@3-gcmz1!y#)-w$u!gn6xy1^zd!#'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://bussified.herokuapp.com/', 'localhost']
+ALLOWED_HOSTS = ['bussified.herokuapp.com', 'localhost']
 
 
 # Application definition
