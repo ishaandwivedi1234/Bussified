@@ -1,0 +1,108 @@
+{% include 'loggedBase.html' %} {% block body %}
+<br />
+<br />
+<br />
+<div class="container">
+  {% for b in bookings %}
+  <div class="row">
+    <div class="col-lg-12 mb-5">
+    
+      <div class="card">
+<div class="card-header">
+          Ticket #{{b.ticketId}}{{b.busId}}{{b.operatorId}}
+          <h5 class="float-right">
+          {% if b.isTicketCancelled %}
+          Cancelled
+          {% else %}
+            Booked
+          {% endif %}
+          
+          
+          </h5>
+        </div>
+        <div class="card-body">
+        <h4 class="card-title text-capitalize">
+             <i class="fas fa-bus pink-text"></i> <strong>{{b.agencyName}}</strong>
+            
+          </h4>
+               <p class="">
+       <small class=" float-right p-2 black-text">
+       
+       <strong class="text-success"> <i class="fas fa-rupee-sign"></i> {{b.totalFare}}</strong> 
+      
+       
+       </small>     
+       </p>
+
+          <h5 class="card-title text-capitalize">
+             <i class="far fa-building grey-text"></i>  {{b.ticketFrom}}
+            <i
+              class="fa fa-arrow-right red-text"
+              aria-hidden="true"
+
+            ></i>
+            <i class="far fa-building grey-text"></i>
+              
+            {{b.ticketTo}}
+          </h4>
+
+   <p class="">
+       <small class=" float-right p-2 black-text">
+       {% for s in b.bookedSeats %}
+       {{s}} 
+       {% endfor %}
+       
+       </small>     
+       </p>
+       
+         <p class="">
+            <h6 class=" text-capitalize ">
+                Date of Journey :<strong> {{b.date}}</strong>
+            </h6>
+       
+            
+          </p>
+<p class="">
+       <small class=" float-right p-2 border green-text">
+        
+        
+        {% if b.isAc %}
+        AC
+        {% else %}
+        Non-AC
+        {% if b.isSleeper %}
+         Sleeper
+         {% else %}
+         Seater
+        {% endif %}
+            
+           
+        {% endif %}
+      
+       </small>     
+       </p>
+          <p class="">
+            <h6 class=" text-capitalize ">
+                Boarding :<strong> {{b.departure}}</strong>
+            </h6>
+            
+          </p>
+            <p class="">
+            <h6 class=" text-capitalize">
+                Booking Date : {{b.bookingDate}}
+            </h6>
+            
+          </p>
+          
+        </div>
+      </div>
+
+
+
+
+    </div>
+  </div>
+
+  {% endfor %}
+</div>
+{% endblock body %}

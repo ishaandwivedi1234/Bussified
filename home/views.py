@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from home.models import Customer, Bus, Operator, Ticket
 from django.contrib import messages
 from datetime import datetime
-from home.custom_models import Result
+from home.custom_models import Result, Bookings
 
 # Create your views here.
 
@@ -327,3 +327,25 @@ def bookTickets(request, customerId, busId, date):
         print(e)
 
     return render(request, "booking.html", context)
+
+
+def myBookings(request, customerId):
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        tickets = Ticket.objects.filter(passengerId=customer.customer_id)
+        bookings = []
+
+        for ticket in tickets:
+            bus = Bus.objects.get(busId=ticket.busId)
+            operator = Operator.objects.get(operator_id=bus.operator_id)
+            bookings.append(Bookings(ticket, customer, bus, operator))
+
+        context['name'] = customer.name
+        context['tickets'] = tickets
+        context['bookings'] = bookings
+        context['customerId'] = customer.customer_id
+    except Exception as e:
+        print(e)
+        messages.warning(request, "Please log in to your accouont ! ")
+    return render(request, 'myBookings.html', context)

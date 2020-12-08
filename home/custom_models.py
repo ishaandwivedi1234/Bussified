@@ -1,4 +1,4 @@
-from home.models import Bus
+from home.models import Bus, Ticket, Customer, Operator
 
 
 class Result():
@@ -36,3 +36,29 @@ class Result():
             self.isDayArrival = True
         else:
             self.isDayArrival = False
+
+
+class Bookings():
+
+    def __init__(self, ticket, customer, bus, operator):
+
+        self.ticketId = str(ticket.ticketId)
+        self.busId = str(bus.busId)
+        self.operatorId = str(operator.operator_id)
+
+        self.ticketFrom = bus.goesfrom
+        self.ticketTo = bus.goesTo
+        self.departure = bus.departureTime
+        self.arrival = bus.arrivalTime
+        self.agencyName = bus.agencyName
+        self.passengerName = ticket.passangerName
+        self.bookedSeats = ticket.bookedSeats
+        self.totalFare = ticket.totalFare
+        self.date = ticket.dateOfJourney
+        self.isTicketCancelled = ticket.isCancelled
+        self.isBusRunning = ticket.isBusRunning
+        self.bookingDate = ticket.bookingDate
+        self.operatorHelpline = operator.helpline
+        self.operatorEmail = operator.email
+        self.isSleeper = bus.isSleeper
+        self.hasAc = bus.hasAc

@@ -13,7 +13,9 @@ urlpatterns = [
     path('operator/logout', views.operatorLogout, name='operatorLogout'),
     path('logout', views.customerLogout, name='customerLogout'),
     path('book/<str:customerId>/<str:busId>/<str:date>',
-         views.bookTickets, name='book')
+         views.bookTickets, name='book'),
+    path('dashboard/mybookings/<str:customerId>',
+         views.myBookings, name='myBookings')
     # path('', views.index, name='home')
 
 ]
