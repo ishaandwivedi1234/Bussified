@@ -1,0 +1,1 @@
+web: gunicorn yatram.wsgi --log-file -

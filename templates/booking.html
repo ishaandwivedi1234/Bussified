@@ -1,0 +1,378 @@
+{% include 'loggedBase.html' %} {% block body %}
+<br />
+<br />
+<br />
+
+<div class="container w-100 ">
+<div class="container ">
+<form method="post" action="">{% csrf_token %}
+  <div class="row">
+
+    <div class=" card-body col-lg-6 col-md-12 col-sm-12">
+        {% if bus.isSleeper   %}
+           <div class="row  p-2 ">
+            <div class="col-3"> 
+           </div>
+            <div class="col-7">
+            <strong class="text-info text-center pl-3">
+                Lower Sleeper Seats
+                </strong>
+    </div>
+           </div>
+        {% for i in "RABC"  %}
+        <div class="row  p-2 ">
+            <div class="col-2"></div>
+            <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:"1"}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"1" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}1</span></div>
+              </div>
+              <div class="col-4"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'2'}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"2" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}2</span></div>
+              </div>
+              
+              
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'3'}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"3" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}3</span></div>
+              </div>
+         
+              
+        </div>
+        {% endfor %}
+        <div class="row  p-2 ">
+        <div class="col-3"></div>
+            <div class="col-7">
+            <strong class="text-danger text-center pl-3">
+                Upper Sleeper Seats
+                </strong>
+        
+            </div>
+
+              
+        </div>
+        
+{% for i in "DEFG"  %}
+        <div class="row  p-2 ">
+            <div class="col-2"></div>
+                        <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'1'}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"1" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}1</span></div>
+              </div>
+              <div class="col-4"> 
+                <div>
+                <input  name="seatsSelected" type="checkbox" value ={{i|add:'2'}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"2" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}2</span></div>
+              </div>
+              
+              
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'3'}} style="width: 30px; height: 30px;" 
+                 {% if i|add:"3" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}3</span></div>
+              </div>
+              
+        </div>
+        {% endfor %}
+        {% else %}
+{% for i in "RABCDEF"  %}
+        <div class="row  p-2 ">
+            <div class="col-2"></div>
+
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'1'}} style="width: 30px; height: 30px;" 
+                
+                {% if i|add:"1" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}1</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'2'}} style="width: 30px; height: 30px;" 
+                {% if i|add:"2" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}2</span></div>
+              </div>
+              <div class="col-3"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'3'}} style="width: 30px; height: 30px;" 
+                  {% if i|add:"3" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}3</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'4'}} style="width: 30px; height: 30px;" 
+                  {% if i|add:"4" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}4</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ={{i|add:'5'}} style="width: 30px; height: 30px;" 
+                  {% if i|add:"5" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>{{i}}5</span></div>
+              </div>
+        </div>
+        {% endfor %}
+        <div class="row  p-2 ">
+            <div class="col-2"></div>
+
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L1" style="width: 30px; height: 30px;" 
+                  {% if "L1" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L1</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L2" style="width: 30px; height: 30px;" 
+                  {% if "L2" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L2</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L3"  style="width: 30px; height: 30px;" 
+                
+                  {% if "L3" in bus.bookedSeats %}
+                disabled
+                {% endif %}>
+                </div>
+               <div class="pl-1" ><span>L3</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L4" style="width: 30px; height: 30px;" 
+                  {% if "L4" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L4</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L5"  style="width: 30px; height: 30px;"
+                
+                {% if "L5" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L5</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L6"  style="width: 30px; height: 30px;" 
+                {% if "L6" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L6</span></div>
+              </div>
+              <div class="col-1"> 
+                <div>
+                <input name="seatsSelected" type="checkbox" value ="L7"  style="width: 30px; height: 30px;" 
+                {% if "L7" in bus.bookedSeats %}
+                disabled
+                {% endif %}
+                >
+                </div>
+               <div class="pl-1" ><span>L7</span></div>
+              </div>
+        </div>
+        {% endif %}
+        
+
+
+    </div>
+    
+
+    <div class="col-lg-6 col-md-12 col-sm-12">
+      <section class="form-simple">
+        <!--Form with header-->
+        <div class="card">
+          <!--Header-->
+          <div class="header pt-3 grey lighten-2">
+            <div class="row d-flex justify-content-start">
+              <h3 class="deep-grey-text mt-3 mb-1 pb-1 mx-5 text-capitalize">
+                Booking From <strong>{{bus.goesFrom}}</strong>&nbsp;
+                <i class="fas fa-arrow-right pink-text"></i>&nbsp;
+                <strong> {{bus.goesTo}}</strong>
+              </h3><br>
+            
+            </div>
+             <div class="row d-flex justify-content-start">
+              <h4 class="deep-grey-text mt-0 mb-4 pb-0 mx-5 text-capitalize">
+            <i class="fas fa-bus-alt red-text"></i>  {{bus.operatorAgencyName}}
+                
+                
+              </h4><br>
+            
+            </div>
+          </div>
+          <!--Header-->
+
+          <div class="card-body mx-4 mt-4">
+            <!--Body-->
+            <span class="text-center mb-2 grey-text "><i class="fas fa-user-friends grey-text"></i> Passenger's Information<span>
+            <div class="md-form">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="{{name}}"
+              />
+              <label for="Form-text4">Full Name</label>
+            </div>
+            <div class="md-form pb-2">
+              <input
+                type="tel"
+                id="Form-tel"
+                name="mobile"
+                class="form-control text-capitalize"
+                required
+              />
+              <label for="Form-text4">Mobile Number</label>
+            </div>
+            <div class="md-form pb-2">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control"
+                value="{{customer.email}}"
+                readonly
+              />
+              <label for="Form-text4">Email Adress</label>
+            </div>
+
+            <span class="mb-2 grey-text "><i class="fas fa-ticket-alt grey-text"></i> Ticket Details<span>
+
+            <div class="md-form pb-3">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="{{dateOfJourney}}"
+                readonly
+              />
+
+              <label for="Form-text4">Date Of Journey</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="Bus Stop - {{bus.goesFrom}}"
+                readonly
+              />
+              <label for="Form-text4">Boarding Point</label>
+            </div>
+            <div class="md-form pb-0">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="Bus Stop - {{bus.goesTo}}"
+                readonly
+              />
+              <label for="Form-text4">Destination</label>
+            </div>
+            <div class="md-form pb-0">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="{{bus.departureTime}}"
+                readonly
+              />
+              <label for="Form-text4">Boarding Time</label>
+            </div>
+            <div class="md-form pb-0">
+              <input
+                type="text"
+                id="Form-text4"
+                class="form-control text-capitalize"
+                value="{{bus.arrivalTime}}"
+                readonly
+              />
+              <label for="Form-text4">Expected Arrival Time</label>
+            </div>
+
+            <div class="text-center mb-4">
+              <button type="submit" class="btn btn-danger btn-block z-depth-2">
+                Proceed To Pay
+              </button>
+            </div>
+          </div>
+        </div>
+        <!--/Form with header-->
+      </section>
+      </form>
+    </div>
+
+  </div>
+</div>
+{% endblock body %}

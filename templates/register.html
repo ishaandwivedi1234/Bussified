@@ -1,0 +1,83 @@
+{% extends 'base.html' %} {% block body %}
+
+<!-- Default form login -->
+<br />
+<div class="container my-5">
+  <div class="row my-5">
+    <div class="col-2 p-0 "></div>
+     <div class="col-md-4 mt-4  p-0 m-0 col-sm-0">
+      <center>
+      <div class="view ">
+  <img src="https://images.pexels.com/photos/2261702/pexels-photo-2261702.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940" class="img-fluid card" alt="placeholder">
+  <div class="mask p-0 m-0 card flex-center waves-effect waves-light rgba-teal-light">
+   
+  </div>
+</div>
+      </center>
+    </div>
+     <div class="col-md-4  col-sm-12 h-50 mt-4">
+      <!--Section: Live preview-->
+      <section class="form-light">
+        <!--Form without header-->
+        <div class="card">
+          <div class="card-body mx-4">
+            <!--Header-->
+            <div class="text-center">
+              <h3 class="pink-text mb-5"><strong>Register</strong></h3>
+            </div>
+
+            <!--Body-->
+            <form method = "post" action = "/register">{% csrf_token %}
+            <div class="md-form">
+            
+              <input type="text" id="Form-email2" name="name" class="form-control" />
+              <label for="Form-email2">Full Name</label>
+            </div>
+            <div class="md-form">
+              <input type="text" id="Form-email2" name="email" class="form-control" />
+              <label for="Form-email2">Your email</label>
+            </div>
+
+            <div class="md-form pb-3">
+              <input type="password" id="Form-pass2" name="password" class="form-control" />
+              <label for="Form-pass2">Your password</label>
+            </div>
+
+            <!--Grid row-->
+            <div class="row d-flex align-items-center mb-4">
+              <!--Grid column-->
+              <div class="col-md-12 col-sm-4 text-center">
+                <button
+                  type="submit"
+                  class="btn btn-pink btn-block btn-rounded z-depth-1"
+                >
+                  Register
+                </button>
+              </div>
+              </form>
+              <!--Grid column-->
+
+              <!--Grid column-->
+              <div class="col-md-12 my-5">
+                <p class="font-small grey-text align-items-center d-flex">
+                  Have an account?
+                  <a href="/" class="blue-text ml-1"> Log in</a>
+                </p>
+              </div>
+              <!--Grid column-->
+            </div>
+            <!--Grid row-->
+          </div>
+
+          <!--Footer-->
+        </div>
+        <!--/Form without header-->
+      </section>
+      <!--Section: Live preview-->
+    </div>
+    
+  </div>
+
+  <!-- Default form login -->
+  {% endblock body %}
+</div>
