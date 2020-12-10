@@ -15,7 +15,21 @@ urlpatterns = [
     path('book/<str:customerId>/<str:busId>/<str:date>',
          views.bookTickets, name='book'),
     path('dashboard/mybookings/<str:customerId>',
-         views.myBookings, name='myBookings')
-    # path('', views.index, name='home')
+         views.myBookings, name='myBookings'),
+    path('dashboard/mybookings/<str:customerId>/completed',
+         views.filterCompleted, name='filterCompleted'),
+    path('dashboard/mybookings/<str:customerId>/cancelled',
+         views.filterCancelled, name='filterCancelled'),
+    path('dashboard/mybookings/<str:customerId>/booked',
+         views.filterBooked, name='filterbooked'),
+    path('dashboard/mybookings/<str:customerId>/cancel/<str:ticketId>',
+         views.cancelTicket, name='cancelTicket'),
+
+    path('dashboard/account/<str:customerId>',
+         views.userAccount, name='userAccount'),
+
+    path('dashboard/contactUs/<str:customerId>',
+         views.contactUs, name='contactus')
+
 
 ]

@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
-from home.models import Customer, Bus, Operator, Ticket
+from home.models import Customer, Bus, Operator, Ticket, Seats
 from django.contrib import messages
 from datetime import datetime
-from home.custom_models import Result, Bookings
+from home.custom_models import Result, Bookings, UserAcount
 
 # Create your views here.
 
@@ -238,13 +238,21 @@ def userDashboard(request):
             if len(bus) == 0:
                 messages.warning(request, "No bus found on this route ! ")
             else:
+                seatMatrix = []
                 for b in bus:
                     if dayOfJourney in b.runsOn:
                         print(b.bookedSeats)
+
+                        try:
+                            seat = Seats.objects.get(busId=b.busId, date=date)
+                            seatMatrix = seat.seatsBooked
+                        except Exception as e:
+                            print(e)
+
                         print("match")
-                        resultsForDay.append(Result(b))
+                        resultsForDay.append(Result(b, seatMatrix))
                     else:
-                        resultsForNonDays.append(Result(b))
+                        resultsForNonDays.append(Result(b, seatMatrix))
 
                 context['hasResultsForOtherDays'] = True
                 context['resultsForOtherDays'] = resultsForNonDays
@@ -269,20 +277,28 @@ def userDashboard(request):
 
 
 def bookTickets(request, customerId, busId, date):
+
     context = {}
     try:
         customer = Customer.objects.get(customer_id=customerId)
         bus = Bus.objects.get(busId=busId)
         operator = Operator.objects.get(operator_id=bus.operator_id)
+        seatMatrix = []
+        try:
+            seats = Seats.objects.get(busId=busId, date=date)
+            seatMatrix = seats.seatsBooked
+        except Exception as e:
+            print(e)
 
         context['name'] = customer.name
-        context['bus'] = Result(bus)
+        context['bus'] = Result(bus, seatMatrix)
         context['customer'] = customer
         context['dateOfJourney'] = date
 
         # booking logic
         seatsSelected = request.POST.getlist('seatsSelected')
-        print(bus.bookedSeats)
+
+        print(seatMatrix)
 
         mobile = request.POST.get('mobile')
 
@@ -292,10 +308,6 @@ def bookTickets(request, customerId, busId, date):
                     request, "Please select atleast 1 seat to book a ticket !")
             else:
                 totalBookedSeats = []
-                for seats in bus.bookedSeats:
-                    totalBookedSeats.append(seats)
-                for seats in seatsSelected:
-                    totalBookedSeats.append(seats)
 
                 ticket = Ticket(
                     passengerId=customer.customer_id,
@@ -315,6 +327,18 @@ def bookTickets(request, customerId, busId, date):
                     bus.save()
                     operator.amountInWallet = operator.amountInWallet+ticket.totalFare
                     operator.save()
+                    if len(seatMatrix) == 0:
+                        newSeat = Seats(operator_id=operator.operator_id,
+                                        busId=bus.busId, date=date, seatsBooked=seatsSelected)
+                        newSeat.save()
+                    else:
+                        seat = Seats.objects.get(busId=bus.busId, date=date)
+                        alreadyBooked = seat.seatsBooked
+                        for seats in seatsSelected:
+                            alreadyBooked.append(seats)
+                        seat.seatsBooked = alreadyBooked
+                        seat.save()
+
                     messages.success(request, "Proceeding to payment..")
 
                 except Exception as e:
@@ -345,7 +369,193 @@ def myBookings(request, customerId):
         context['tickets'] = tickets
         context['bookings'] = bookings
         context['customerId'] = customer.customer_id
+
+        if len(bookings) == 0:
+            context['hasNoBookings'] = True
+        else:
+            context['hasNoBookings'] = False
     except Exception as e:
         print(e)
         messages.warning(request, "Please log in to your accouont ! ")
     return render(request, 'myBookings.html', context)
+
+
+def filterCompleted(request, customerId):
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        tickets = Ticket.objects.filter(passengerId=customer.customer_id)
+        bookings = []
+
+        for ticket in tickets:
+            bus = Bus.objects.get(busId=ticket.busId)
+            operator = Operator.objects.get(operator_id=bus.operator_id)
+            booking = Bookings(ticket, customer, bus, operator)
+            if booking.isCompleted:
+                bookings.append(booking)
+
+        context['name'] = customer.name
+        context['tickets'] = tickets
+        context['bookings'] = bookings
+        context['customerId'] = customer.customer_id
+        if len(bookings) == 0:
+            context['hasNoBookings'] = True
+        else:
+            context['hasNoBookings'] = False
+    except Exception as e:
+        print(e)
+        messages.warning(request, "Please log in to your accouont ! ")
+    return render(request, 'myBookings.html', context)
+
+
+def filterCancelled(request, customerId):
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        tickets = Ticket.objects.filter(passengerId=customer.customer_id)
+        bookings = []
+
+        for ticket in tickets:
+            bus = Bus.objects.get(busId=ticket.busId)
+            operator = Operator.objects.get(operator_id=bus.operator_id)
+            booking = Bookings(ticket, customer, bus, operator)
+            if booking.isTicketCancelled:
+                bookings.append(booking)
+
+        context['name'] = customer.name
+        context['tickets'] = tickets
+        context['bookings'] = bookings
+        context['customerId'] = customer.customer_id
+        if len(bookings) == 0:
+            context['hasNoBookings'] = True
+        else:
+            context['hasNoBookings'] = False
+    except Exception as e:
+        print(e)
+        messages.warning(request, "Please log in to your accouont ! ")
+    return render(request, 'myBookings.html', context)
+
+
+def filterBooked(request, customerId):
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        tickets = Ticket.objects.filter(passengerId=customer.customer_id)
+        bookings = []
+
+        for ticket in tickets:
+            bus = Bus.objects.get(busId=ticket.busId)
+            operator = Operator.objects.get(operator_id=bus.operator_id)
+            booking = Bookings(ticket, customer, bus, operator)
+            if booking.isCompleted == False and booking.isTicketCancelled == False:
+                bookings.append(booking)
+
+        context['name'] = customer.name
+        context['tickets'] = tickets
+        context['bookings'] = bookings
+        context['customerId'] = customer.customer_id
+        if len(bookings) == 0:
+            context['hasNoBookings'] = True
+        else:
+            context['hasNoBookings'] = False
+    except Exception as e:
+        print(e)
+        messages.warning(request, "Please log in to your accouont ! ")
+    return render(request, 'myBookings.html', context)
+
+
+def cancelTicket(request, customerId, ticketId):
+    context = {}
+
+    try:
+
+        customer = Customer.objects.get(customer_id=customerId)
+        ticket = Ticket.objects.get(ticketId=ticketId)
+        operator = Operator.objects.get(operator_id=ticket.operator_id)
+        bus = Bus.objects.get(busId=ticket.busId)
+        context['booking'] = Bookings(ticket, customer, bus, operator)
+        seats = Seats.objects.get(
+            busId=ticket.busId, date=ticket.dateOfJourney)
+        context['name'] = customer.name
+        if request.method == 'POST':
+            try:
+                operator.amountInWallet = operator.amountInWallet - ticket.totalFare
+                operator.cancelledAmount = operator.cancelledAmount + ticket.totalFare
+                customer.wallet = customer.wallet + ticket.totalFare
+
+                oldSeats = seats.seatsBooked
+                seatUpdate = []
+                for seat in seats.seatsBooked:
+                    if ticket.bookedSeats.count(seat) == 0:
+                        seatUpdate.append(seat)
+                seats.seatsBooked = seatUpdate
+                ticket.isCancelled = True
+
+                ticket.save()
+                operator.save()
+
+                seats.save()
+                customer.save()
+                messages.success(request, 'Ticket cancelled sucessfully ! ')
+                return redirect('/dashboard/mybookings/'+str(customer.customer_id) + '/cancelled')
+            except Exception as e:
+                print(e)
+                messages.warning(
+                    request, 'Something failed ! please try later ')
+
+        return render(request, 'cancelTicket.html', context)
+
+    except Exception as e:
+        print(e)
+        messages.warning(request, 'Something failed ! please try later ')
+        return redirect('/dashboard/mybookings/'+str(customer.customer_id))
+
+
+def userAccount(request, customerId):
+
+    try:
+
+        customer = Customer.objects.get(customer_id=customerId)
+        tickets = Ticket.objects.filter(passengerId=customer.customer_id)
+        context = {}
+        context['name'] = customer.name
+        context['customerId'] = customer.customer_id
+        context['customer'] = customer
+        resultTickets = []
+
+        try:
+            for ticket in tickets:
+                # print(ticket)
+                bus = Bus.objects.get(busId=ticket.busId)
+                operator = Operator.objects.get(operator_id=bus.operator_id)
+                # print(ticket, bus, operator)
+                resultTickets.append(Bookings(ticket, customer, bus, operator))
+            resultTickets.sort(
+            )
+        except Exception as e:
+            print(e)
+        account = UserAcount(customer, resultTickets)
+        context['account'] = account
+        if len(account.upcommingBookings) > 0:
+            context['hasUpcomming'] = True
+        else:
+            context['hasUpcomming'] = False
+
+        return render(request, 'account.html', context)
+
+    except Exception as e:
+        print(e)
+        return redirect('/dashboard')
+        messages.warning(request, 'something failed ! please try later ')
+
+
+def contactUs(request, customerId):
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        context['name'] = customer.name
+        context['customer'] = customer
+        context['customerId'] = customer.customer_id
+    except:
+        messages.warning(request, 'Something failed ! Please try again later ')
+    return render(request, 'underConstruction.html', context)

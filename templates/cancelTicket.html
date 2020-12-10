@@ -1,0 +1,86 @@
+{% include 'loggedBase.html' %} {% block body %} <br /><br />
+
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-12 mt-3">
+      <div class="card text-center">
+        <div class="card-header">
+          Cancel Ticket
+          #{{booking.ticketId}}{{booking.busId}}{{booking.operatorId}}
+        </div>
+        <div class="card-body">
+          <h5 class="card-title text-capitalize">
+            <strong>{{booking.ticketFrom}}</strong>
+            <i class="fas fa-arrow-right pink-text"></i>
+            <strong> {{booking.ticketTo}}</strong>
+          </h5>
+          <h3>
+            Refund Amount -
+            <i class="fas fa-rupee-sign green-text"></i> {{booking.totalFare}}
+          </h3>
+          <h5>Date Of Journey {{booking.date}}</h5>
+          <!-- Button trigger modal -->
+          <button
+            type="button"
+            class="btn btn-danger"
+            data-toggle="modal"
+            data-target="#exampleModal"
+          >
+            Cancel This Ticket
+          </button>
+
+          <!-- Modal -->
+          <div
+            class="modal fade"
+            id="exampleModal"
+            tabindex="-1"
+            role="dialog"
+            aria-labelledby="exampleModalLabel"
+            aria-hidden="true"
+          >
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h5 class="modal-title" id="exampleModalLabel">
+                    Confirm Cancilation
+                  </h5>
+                  <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="Close"
+                  >
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  Are you sure you want to cancel this ticket
+                </div>
+                <div class="modal-footer">
+                  <button
+                    type="button"
+                    class="btn btn-success"
+                    data-dismiss="modal"
+                  >
+                    No, Take me back
+                  </button>
+                  <form method="post" action="">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">
+                      Yes I'am Sure
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-muted">
+          Ticket fare will be refunded in your bank account within 7 days
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {% endblock body%}
+</div>

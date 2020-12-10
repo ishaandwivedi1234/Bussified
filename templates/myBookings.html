@@ -3,38 +3,69 @@
 <br />
 <br />
 <div class="container">
+  <!-- Basic dropdown -->
+<div class="btn-group ml-0 mb-4">
+  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Filter
+  </button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="/dashboard/mybookings/{{customerId}}">All Tickets</a>
+    <a class="dropdown-item" href="/dashboard/mybookings/{{customerId}}/booked">Booked Tickets</a>
+    <a class="dropdown-item" href="/dashboard/mybookings/{{customerId}}/cancelled">Cancelled Tickets</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="/dashboard/mybookings/{{customerId}}/completed">Completed Journey</a>
+  </div>
+</div>
+<!-- Basic dropdown -->
   {% for b in bookings %}
   <div class="row">
+
     <div class="col-lg-12 mb-5">
     
       <div class="card">
 <div class="card-header">
+       <img class="img-fluid " height=22 width=20  src="https://www.flaticon.com/svg/static/icons/svg/639/639667.svg">
           Ticket #{{b.ticketId}}{{b.busId}}{{b.operatorId}}
           <h5 class="float-right">
-          {% if b.isTicketCancelled %}
-          Cancelled
+          {% if b.isCompleted %}
+       <img class="img-fluid " height=32 width=20  src="https://www.flaticon.com/svg/static/icons/svg/391/391175.svg">
+          Completed
+          {% elif  b.isTicketCancelled%}
+         <i class="fas fa-times red-text"></i>  Cancelled
           {% else %}
-            Booked
+       <img class="img-fluid " height=32 width=32  src="https://www.flaticon.com/svg/static/icons/svg/2867/2867644.svg">
+
+          Booked
           {% endif %}
-          
-          
+
           </h5>
+        <p class="float-rightp-0">
+       <small class="  p-0 black-text text-align-right text-linethrough">
+       <img class="img-fluid " height=22 width=20  src="https://www.flaticon.com/svg/static/icons/svg/1595/1595173.svg">
+       
+       
+       {% for s in b.bookedSeats %}
+       {{s}} 
+       {% endfor %}
+       
+       </small>     
+       </p>
         </div>
         <div class="card-body">
-        <h4 class="card-title text-capitalize">
+        <h5 class="card-title text-capitalize">
              <i class="fas fa-bus pink-text"></i> <strong>{{b.agencyName}}</strong>
             
-          </h4>
+          </h5>
                <p class="">
-       <small class=" float-right p-2 black-text">
+       <h5 class=" float-right p-2 black-text border">
        
        <strong class="text-success"> <i class="fas fa-rupee-sign"></i> {{b.totalFare}}</strong> 
       
        
-       </small>     
+       </h5>     
        </p>
 
-          <h5 class="card-title text-capitalize">
+          <h6  class="card-title text-capitalize">
              <i class="far fa-building grey-text"></i>  {{b.ticketFrom}}
             <i
               class="fa fa-arrow-right red-text"
@@ -46,17 +77,10 @@
             {{b.ticketTo}}
           </h4>
 
-   <p class="">
-       <small class=" float-right p-2 black-text">
-       {% for s in b.bookedSeats %}
-       {{s}} 
-       {% endfor %}
-       
-       </small>     
-       </p>
+
        
          <p class="">
-            <h6 class=" text-capitalize ">
+            <h6 class=" text-capitalize  ">
                 Date of Journey :<strong> {{b.date}}</strong>
             </h6>
        
@@ -93,6 +117,22 @@
             </h6>
             
           </p>
+
+          <p class="float-right">
+            {% if b.isCompleted %}
+              <i class="fas fa-print grey-text"></i>
+              Print Ticket
+              {% elif b.isTicketCancelled%}
+             <i class="fas fa-print grey-text"></i>
+              Print Ticket
+              
+              {% else %}
+              <i class="fas fa-print grey-text"></i>
+              Print Ticket <i class="fas fa-times ml-3 mr-1 red-text"></i><a href="/dashboard/mybookings/{{customerId}}/cancel/{{b.ticketId}}" class="btn-link">Cancel</a>
+
+            {% endif %}
+            
+          </p>
           
         </div>
       </div>
@@ -104,5 +144,15 @@
   </div>
 
   {% endfor %}
+
+  {% if hasNoBookings %}
+  <center>
+  <div class="">
+  <img class="img-fluid" src="https://cdn.dribbble.com/users/1163441/screenshots/3064215/____.gif"  height = 400 width=400/>
+  </div>
+  <h4 class="">Aye aye Captain ! Found Nothing <i class="far fa-grin-beam-sweat pink-text"></i></h4>
+  </center>
+
+  {% endif %}
 </div>
 {% endblock body %}

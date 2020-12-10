@@ -1,0 +1,134 @@
+{% include 'loggedBase.html' %} {% block body %}
+
+<div class="container mt-5 pt-5">
+  <div class="row">
+    <div class="col-12">
+      <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+          <h3 class="">
+            Hey <strong class="red-text">{{name}} !</strong>
+            <i class="far fa-grin-beam pink-text"></i>
+          </h3>
+          <p class="lead">
+            welcome back to your account , Need any help ? contact us now
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div
+        class="card text-dark bg-light mb-3"
+        style="max-width: 35rem; margin-left: 5px"
+      >
+        <div class="card-header">
+          <i class="far fa-user-circle"></i> My Account
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">{{name}}</h5>
+          <p class="card-text">{{customer.email}}</p>
+          <a class="card-text"><i class="fas fa-marker"></i> Edit</a>
+          <a class="card-text ml-2 red-text"
+            ><i class="far fa-trash-alt red-text"></i> Delete</a
+          >
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div
+        class="card text-white bg-dark mb-3"
+        style="max-width: 35rem; margin-left: 5px"
+      >
+        <div class="card-header"><i class="fas fa-wallet"></i> My Wallet</div>
+        <div class="card-body">
+          <h5 class="card-title green-text">
+            <i class="fas fa-rupee-sign"></i> {{account.wallet}}
+          </h5>
+          <p class="card-text">
+            You can use your wallet balance to book a ticket
+          </p>
+          <a class="card-text green-text"
+            ><i class="fab fa-cc-visa"></i> Widthdraw</a
+          >
+          <a class="card-text ml-2 red-text"
+            ><i class="fab fa-gratipay red-text"></i> Donate</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div
+        class="card text-dark bg-warning mb-3"
+        style="max-width: 35rem; margin-left: 5px"
+      >
+        <div class="card-header">
+          <i class="fas fa-chart-line"></i> My Stats 2020
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            Travel Spend
+            <i class="fas fa-rupee-sign ml-2"></i> {{account.totalSpend}}
+          </h5>
+          <p class="card-text black-text">
+            Completed Journey
+            <span class=""><strong>{{account.completed}}</strong></span>
+
+            <br />
+            <span class="mt-0 pt-0"
+              >Cancelled Plans <strong>{{account.cancelled}}</strong></span
+            ><br />
+            <span class="mt-0 pt-0"
+              >Upcomming Journeys <strong>{{account.booked}}</strong></span
+            ><br />
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-12">
+      <div
+        class="card text-white bg-info mb-3"
+        style="max-width: 35rem; margin-left: 5px"
+      >
+        <div class="card-header">
+          <i class="fas fa-suitcase-rolling"></i> Upcommig Journey
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">
+            {% if hasUpcomming %}
+            <strong class="black-text text-capitalize">
+              {{account.upcommingBookings.0.ticketFrom}}
+              <i class="fas fa-arrow-right yellow-text"> </i>
+              {{account.upcommingBookings.0.ticketTo}}
+            </strong>
+          </h5>
+          <p class="card-text white-text">
+            <i class="far fa-calendar-alt white-text"></i
+            ><span class="ml-1"> {{account.upcommingBookings.0.date}}</span>
+            <i class="far fa-clock ml-3"></i>
+            <span class="ml-1 text-capitalize"
+              >{{account.upcommingBookings.0.departure}}</span
+            >
+          </p>
+
+          {% else %}
+          <div class="header">No upcomming plans</div>
+          <h6 class="pt-2 pb-1">It seems you are missing something !</h6>
+
+          {% endif %}
+
+          <a class="card-text text-black-50"
+            ><i class="fas fa-ticket-alt white-green"></i> See bokings</a
+          >
+        </div>
+      </div>
+    </div>
+
+    {% endblock body %}
+  </div>
+</div>

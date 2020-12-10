@@ -9,6 +9,7 @@ class Customer(models.Model):
     name = models.CharField(max_length=128)
     email = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=128)
+    wallet = models.FloatField(default=0)
 
     def __str__(self):
         return self.name
@@ -60,6 +61,7 @@ class Operator(models.Model):
     password = models.CharField(max_length=128)
     agencyName = models.CharField(max_length=128)
     amountInWallet = models.FloatField(default=0.0)
+    cancelledAmount = models.FloatField(default=0.0)
     helpline = models.CharField(max_length=12, default="000-000-000")
 
     def __str__(self):
@@ -85,3 +87,14 @@ class Ticket(models.Model):
 
     def __str__(self):
         return self.passangerName
+
+
+class Seats(models.Model):
+    busId = models.CharField(max_length=10000)
+    operator_id = models.CharField(max_length=10000)
+    date = models.DateField()
+    seatsBooked = ArrayField(
+        ArrayField(
+            models.CharField(max_length=10)
+        )
+    )
