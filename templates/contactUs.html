@@ -1,0 +1,171 @@
+{% include "loggedBase.html" %} {% block body %}
+
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="container my-5 py-5 z-depth-1">
+        <!--Section: Content-->
+        <section
+          class="px-md-5 mx-md-5 text-center text-lg-left dark-grey-text"
+        >
+          <style>
+            .map-container {
+              height: 200px;
+              position: relative;
+            }
+
+            .map-container iframe {
+              left: 0;
+              top: 0;
+              height: 100%;
+              width: 100%;
+              position: absolute;
+            }
+          </style>
+
+          <!--Google map-->
+          <div id="map-container-google-1" class="z-depth-1 map-container mb-5">
+            <iframe
+              src="https://maps.google.com/maps?q=Jaypee University Of Engineering And Technology, Mumbai - Agra National Highway, Raghogarh -Vijaypur, Madhya Pradesh, India&t=&z=13&ie=UTF8&iwloc=&output=embed"
+              frameborder="0"
+              style="border: 0"
+              allowfullscreen
+            ></iframe>
+          </div>
+          <!--Google Maps-->
+
+          <!--Grid row-->
+          <div class="row">
+            <!--Grid column-->
+            <div class="col-lg-5 col-md-12 mb-0 mb-md-0">
+              <h3 class="font-weight-bold">Contact Me</h3>
+
+              <p class="text-muted">
+                Hi visitor
+                <img
+                  height="25"
+                  width="25"
+                  class="img-fluid"
+                  src="https://www.flaticon.com/svg/static/icons/svg/3027/3027893.svg"
+                />
+                ! bussified is a reaeltime bus booking system, A Django
+
+                <img
+                  height="15"
+                  width="15"
+                  class="img-fluid"
+                  src="https://brandslogos.com/wp-content/uploads/images/large/django-logo.png"
+                />
+                based project which is part of my 2 nd year B.Tech project for
+                Advanced programming lab
+                <img
+                  height="20"
+                  width="20"
+                  class="img-fluid"
+                  src="https://www.flaticon.com/svg/static/icons/svg/1822/1822899.svg"
+                />
+                and Database Systems
+                <img
+                  height="20"
+                  width="20"
+                  class="img-fluid"
+                  src="https://www.flaticon.com/svg/static/icons/svg/3160/3160908.svg"
+                />.<br> I hope you liked it
+                <img
+                  height="15"
+                  width="15"
+                  class="img-fluid"
+                  src="https://www.flaticon.com/svg/static/icons/svg/1029/1029132.svg"
+                />
+              </p>
+
+              <p>
+                <span class="font-weight-bold mr-2">Email:</span
+                ><a href="">ishaan.dwivedi@gmail.com</a>
+              </p>
+              <p>
+                <span class="font-weight-bold mr-2">Phone:</span
+                ><a href="">+91-638817***7</a>
+              </p>
+            </div>
+            <!--Grid column-->
+            <!--Grid  column-->
+            <div class="col-lg-7 col-md-12 mb-4 mb-md-0">
+              <!--Grid row-->
+            <form action="" method="post">{% csrf_token %}
+
+              <div class="row">
+                <!--Grid column-->
+                <div class="col-md-6">
+                  <!-- Material outline input -->
+                  <div class="md-form md-outline mb-0">
+                    <input
+                      type="text"
+                      id="form-first-name"
+                      class="form-control"
+                      name="fname"
+                    />
+                    <label for="form-first-name">First name</label>
+                  </div>
+                </div>
+                <!--Grid column-->
+
+                <!--Grid column-->
+                <div class="col-md-6">
+                  <!-- Material outline input -->
+                  <div class="md-form md-outline mb-0">
+                    <input
+                      type="text"
+                      id="form-last-name"
+                      class="form-control"
+                      name="lname"
+                    />
+                    <label for="form-last-name">Last name</label>
+                  </div>
+                </div>
+                <!--Grid column-->
+              </div>
+              <!--Grid row-->
+
+              <!-- Material outline input -->
+              <div class="md-form md-outline mt-3">
+                <input type="email" id="form-email" class="form-control" name="email" />
+                <label for="form-email">E-mail</label>
+              </div>
+
+              <!-- Material outline input -->
+              <div class="md-form md-outline">
+                <input type="text" id="form-subject" class="form-control" name="sub" />
+                <label for="form-subject">Subject</label>
+              </div>
+
+              <!--Material textarea-->
+              <div class="md-form md-outline mb-3">
+                <textarea
+                  id="form-message"
+                  class="md-textarea form-control"
+                  rows="3"
+                  name="query"
+                ></textarea>
+                <label for="form-message">How we can help?</label>
+              </div>
+
+              <button type="submit" class="btn btn-info btn-sm ml-0">
+                Submit<i class="far fa-paper-plane ml-2"></i>
+              </button>
+            </div>
+            </form>
+
+            
+            <!--Grid column-->
+          </div>
+          <!--Grid row-->
+        </section>
+        <!--Section: Content-->
+      </div>
+      <div class="col-6"></div>
+    </div>
+  </div>
+
+  {% endblock body %}
+</div>

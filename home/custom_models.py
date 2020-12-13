@@ -45,8 +45,10 @@ class Bookings():
 
         self.ticketId = str(ticket.ticketId)
         self.busId = str(bus.busId)
+        self.customerId = customer.customer_id
         self.operatorId = str(operator.operator_id)
-
+        self.customerName = customer.name
+        self.customerContact = ticket.passangerContact
         self.ticketFrom = bus.goesfrom
         self.ticketTo = bus.goesTo
         self.departure = bus.departureTime
@@ -88,7 +90,40 @@ class UserAcount():
         self.booked = 0
 
         self.upcommingBookings = []
-        print("ticket recence", tickets)
+        # print("ticket recence", tickets)
+        if len(self.tickets) == 0:
+            self.hasNoUpcomming = False
+            self.upcomming = 0
+        else:
+            for ticket in tickets:
+                if ticket.isCompleted:
+                    self.completed = self.completed + 1
+
+                elif ticket.isTicketCancelled:
+                    self.cancelled = self.cancelled + 1
+
+                else:
+                    self.booked = self.booked + 1
+                    self.upcommingBookings.append(ticket)
+
+        for ticket in tickets:
+            if ticket.isTicketCancelled == False:
+                self.totalSpend = self.totalSpend + ticket.totalFare
+
+class OperatorAccount():
+    def __init__(self, operator, tickets):
+
+        self.name = operator.name
+        self.email = operator.email
+        self.wallet = operator.wallet
+        self.tickets = tickets
+        self.totalSpend = 0
+        self.cancelled = 0
+        self.completed = 0
+        self.booked = 0
+
+        self.upcommingBookings = []
+        # print("ticket recence", tickets)
         if len(self.tickets) == 0:
             self.hasNoUpcomming = False
             self.upcomming = 0

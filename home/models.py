@@ -70,6 +70,7 @@ class Operator(models.Model):
 
 class Ticket(models.Model):
     passangerName = models.CharField(max_length=10028)
+    passangerContact = models.CharField(max_length=12, default='000-000-000')
     ticketId = models.AutoField(primary_key=True)
     busId = models.CharField(max_length=10028, default='-1')
     passengerId = models.CharField(max_length=10028)
@@ -92,7 +93,7 @@ class Ticket(models.Model):
 class Seats(models.Model):
     busId = models.CharField(max_length=10000)
     operator_id = models.CharField(max_length=10000)
-    date = models.DateField()
+    date = models.DateField(unique=True)
     seatsBooked = ArrayField(
         ArrayField(
             models.CharField(max_length=10)

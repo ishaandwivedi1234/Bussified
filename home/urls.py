@@ -29,7 +29,23 @@ urlpatterns = [
          views.userAccount, name='userAccount'),
 
     path('dashboard/contactUs/<str:customerId>',
-         views.contactUs, name='contactus')
+         views.contactUs, name='contactus'),
 
+    path('dashboard/account/delete/<str:customerId>',
+         views.deleteAccount, name='deleteAccount'),
+    path('operator/dashboard/bookings/<str:operatorId>',
+         views.reservations, name="reservations"),
+    path('operator/dashboard/bookings/<str:operatorId>/completed',
+         views.operatorFilterCompleted, name="filterOperatorCompleted"),
+    path('operator/dashboard/bookings/<str:operatorId>/cancelled',
+         views.operatorFilterCancelled, name="filterOperatorcancelled"),
+    path('operator/dashboard/bookings/<str:operatorId>/booked',
+         views.operatorFilterBooked, name="filterOperatorbooked"),
+    path('operator/dashboard/bookings/<str:customerId>/cancel/<str:ticketId>',
+         views.cancelTicketOperator, name='cancelTicketOperator'),
 
+    path('operator/dashboard/mybuses/<str:operatorId>',
+         views.myBusses, name="mybus"),
+    path('operator/dashboard/account/<str:operatorId>',
+         views.operatorAccount, name='operatorAc')
 ]

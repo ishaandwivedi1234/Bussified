@@ -76,28 +76,41 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#">My Busses</a>
+              <a
+                class="nav-link"
+                href="/operator/dashboard/mybuses/{{operator.operator_id}}"
+                >My Busses</a
+              >
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="#">Bookings</a>
+              <a
+                class="nav-link"
+                href="/operator/dashboard/bookings/{{operator.operator_id}}"
+                >Bookings</a
+              >
             </li>
 
             <li class="nav-item dropdown">
               <a
-                class="nav-link dropdown-toggle"
+                class="nav-link dropdown-toggle text-capitalize"
                 id="navbarDropdownMenuLink-555"
                 data-toggle="dropdown"
                 aria-haspopup="true"
                 aria-expanded="false"
               >
-                <i class="fa fa-user-circle" aria-hidden="true"></i> {{name}}
+                <i class="fa fa-user-circle" aria-hidden="true"></i>
+                {{operator.name}}
               </a>
               <div
                 class="dropdown-menu dropdown-secondary"
                 aria-labelledby="navbarDropdownMenuLink-555"
               >
-                <a class="dropdown-item" href="#">Account</a>
+                <a
+                  class="dropdown-item"
+                  href="/operator/dashboard/account/{{operator.operator_id}}"
+                  >Account</a
+                >
                 <a class="dropdown-item" href="/operator/logout">Logout</a>
               </div>
             </li>
