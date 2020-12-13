@@ -47,5 +47,12 @@ urlpatterns = [
     path('operator/dashboard/mybuses/<str:operatorId>',
          views.myBusses, name="mybus"),
     path('operator/dashboard/account/<str:operatorId>',
-         views.operatorAccount, name='operatorAc')
+         views.operatorAccount, name='operatorAc'),
+
+    path('operator/dashboard/bookings/<str:operatorId>/<str:busId>/stop',
+         views.stopBus, name="stopBus"),
+    path('operator/dashboard/bookings/<str:operatorId>/<str:busId>/start',
+         views.startBus, name="startBus"),
+    path('operator/dashboard/bookings/delete/<str:operatorId>/<str:busId>',
+         views.deleteBus, name="deleteBus"),
 ]

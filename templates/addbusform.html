@@ -1,0 +1,249 @@
+{% block addbus %}
+ <div
+      class="modal fade"
+      id="exampleModalCenter"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+<div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalCenterTitle">
+              Add New Bus
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form action="/operator/add/{{operator_id}}" method="post">
+              {% csrf_token %}
+              <i class="fa fa-registered red-text"></i>
+              <i> Vehical must be registed with Regional Transport Office</i
+              ><br />
+              <i class="fa fa-info-circle text-success" aria-hidden="true"></i>
+              <i> Alteast 5 major stopage is required</i>
+              <div class="md-form">
+                <label class="font-weight-light"
+                  >Bus Registration Number / Vehical Number</label
+                >
+                <input type="text" class="form-control" name="busNumber"  required/>
+              </div>
+
+              <div class="md-form">
+                <label class="font-weight-light">Bus Name(Model)</label>
+                <input type="text" class="form-control" name="model" required />
+              </div>
+
+              <label class="font-weight-light"
+                ><strong>Ac configration</strong></label
+              ><br />
+              <div class="radio">
+                <label
+                  ><input type="radio" name="acSettings" value="1"checked  /> Ac
+                  Bus</label
+                >
+              </div>
+              <div class="radio">
+                <label
+                  ><input type="radio" name="acSettings" value="0" checked/> Non Ac Bus</label
+                >
+              </div>
+              <label class="font-weight-light"
+                ><strong>Sleeper configration</strong></label
+              ><br />
+              <div class="radio">
+                <label
+                  ><input type="radio" name="sleeperSettings" value="1" /> Sleeper
+                  Bus
+                </label>
+                &nbsp;
+                <label
+                  ><input type="radio" name="sleeperSettings" value="0" checked/> Non
+                  Sleeper Bus
+                </label>
+              </div>
+
+              <div class="md-form">
+                <label class="font-weight-light">Starts From (Source)</label>
+                <input type="text" class="form-control" name="from"  required/>
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light">Last Stop (Destination)</label>
+                <input type="text" class="form-control" name="to" required />
+              </div>
+
+              <div class="md-form">
+                <label class="font-weight-light">Total Seats </label>
+                <input type="number" class="form-control" name="seats" required />
+
+              </div>
+               
+           <div class="md-form ">
+            
+  <input  name="departure" type="time"  class="form-control  " required>
+  
+ <label for="input_starttime">Departure Time</label>
+</div>
+           <div class="md-form ">
+            
+  <input  name="arrival" type="time"  class="form-control " required>
+  
+<label for="input_starttime">Arrival Time</label>
+</div>
+
+<div class="md-form">
+                <label class="font-weight-light"
+                  >Arrives On Day (eg. 2 if bus arrives on day 2 of it's journey )</label
+                >
+                <input type="number" class="form-control" name="arrivesOn" required />
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light"
+                  >Full Journey( source to destination ) Fare</label
+                >
+                <input type="number" class="form-control" name="fare"  required/>
+              </div>
+
+              <div class="md-form">
+                <label class="font-weight-light">Stops Fare Cuts </label>
+                <input type="number" class="form-control" name="fareCuts" required />
+              </div>
+              <label class="font-weight-light text-info">
+                <strong>Running Days </strong></label
+              ><br />
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox1"
+                  value="monday"
+                 
+                />
+                <label class="form-check-label" for="inlineCheckbox1"
+                  >Monday</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox2"
+                  value="tuesday"
+                  
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Tuesday</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox3"
+                  value="wednesday"
+                  
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Wednesday</label
+                >
+              </div>
+
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox4"
+                  value="thursday"
+                  
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Thursday</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox5"
+                  value="friday"
+                  
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Friday</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox6"
+                  value="saturday"
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Saturday</label
+                >
+              </div>
+              <div class="form-check form-check-inline">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  name="days"
+                  id="inlineCheckbox7"
+                  value="sunday"
+                />
+                <label class="form-check-label" for="inlineCheckbox2"
+                  >Sunday</label
+                >
+              </div>
+
+              <div class="md-form">
+                <label class="font-weight-light">Major Stop 1</label>
+                <input type="text" class="form-control" name="stop1" required />
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light">Major Stop 2</label>
+                <input type="text" class="form-control" name="stop2"  required/>
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light">Major Stop 3</label>
+                <input type="text" class="form-control" name="stop3" required />
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light">Major Stop 4</label>
+                <input type="text" class="form-control" name="stop4" required />
+              </div>
+              <div class="md-form">
+                <label class="font-weight-light">Major Stop 5</label>
+                <input type="text" class="form-control" name="stop5"  required/>
+              </div>
+           
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-warning" data-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Save changes</button>
+          </div>
+           </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+      $('#input_starttime').pickatime({});
+    </script>
+{% endblock addbus %}

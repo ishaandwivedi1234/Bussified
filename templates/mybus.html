@@ -1,89 +1,186 @@
 {% include 'loggedOperatorBase.html' %} {% block body %}
+<div class="container mt-5">
+  {% for bus  in results %}
 
-<div class="container">
-  <div class="row">
-    <div class="container my-5 py-5 z-depth-1">
-      <!--Section: Content-->
-      <div class="row mb-4 ml-5">
-            
-                <div class="col-12"> 
-                <span class="badge badge-secondary"><h6 class="pt-1 pb-0 pl-3 pr-3">Volvo Master</h6></span>
-                <span class="badge badge-warning ml-2"><h6 class="pt-1 pb-0 pl-3 pr-3">Volvo Master</h6></span>
-                <span class="badge badge-warning ml-2"><h6 class="pt-1 pb-0 pl-3 pr-3">Volvo Master</h6></span>
+  <div class="row mb-4">
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header">
+          <i class="fas fa-bus"></i>
+          Bus #{{bus.busId}}{{operator.operator_id}}
+        
+          <a class="float-right ml-3 red-text" href ="/operator/dashboard/bookings/delete/{{operator.operator_id}}/{{bus.busId}}"> <i class="fas fa-trash-alt mr-1"></i>Delete </a>
+          {% if bus.isRunning %}
+          <a class="float-right pink-text" href="/operator/dashboard/bookings/{{operator.operator_id}}/{{bus.busId}}/stop"> <i class="fas fa-times mr-1"></i>Stop Running</a>
+          {% else %}
+          <a class="float-right green-text" href="/operator/dashboard/bookings/{{operator.operator_id}}/{{bus.busId}}/start"> <i class="fas fa-check-circle mr-1"></i>Start Running</a>
 
-                </div>
-                <div class="col-3"> </div>
-
-
-            
-            </div>
-      <section class="px-md-3 mx-md-3 dark-grey-text text-center">
-        <!--Grid row-->
-        <div class="row d-flex justify-content-center">
-          <!--Grid column-->
-          <div class="col-lg-8">
-            <!--Grid row-->
-            <div class="row">
-              <!--First column-->
-              <div class="col-md-3 col-6 mb-4">
-                <img class="img-fluid " 
-                height=60 
-                width=60
-                src="https://www.flaticon.com/svg/static/icons/svg/1042/1042266.svg"
-                
-                ></img>
-                <div class="row"></div>
-
-                <div class="mt-3">UP-65-AZ121</div>
-              </div>
-              <!--/First column-->
-
-              <!--Second column-->
-              <div class="col-md-3 col-6 mb-4">
-                <img class="img-fluid "
-                height=60 
-                width=60  
-                src="https://www.flaticon.com/svg/static/icons/svg/1178/1178847.svg"
-                >
-                <div class="mt-3">Guna</div>
-                    
-              </div>
-              <!--/Second column-->
-
-              <!--Third column-->
-              <div class="col-md-3 col-6 mb-4">
-                <img class="img-fluid "
-                height=60 
-                width=60  
-                src="https://www.flaticon.com/svg/static/icons/svg/1042/1042263.svg"
-                >
-                <div class="mt-3">Reva</div>
-                    
-              </div>
-              <!--/Third column-->
-
-              <!--Third column-->
-              <div class="col-md-3 col-6 mb-4">
-                <img class="img-fluid "
-                height=60 
-                width=60  
-                src="https://www.flaticon.com/svg/static/icons/svg/3558/3558207.svg"
-                >
-                <div class="mt-3">12 : 00 P.M.</div>
-                    
-              </div>
-              <!--/Third column-->
-            </div>
-            <!--/Grid row-->
-            
-          </div>
-          <!--Grid column-->
+          {% endif %}
+          
         </div>
-        <!--Grid row-->
-      </section>
-      <!--Section: Content-->
+        <div class="card-body">
+          <h5 class="card-title">
+            <img
+              class="img-fluid"
+              height="30"
+              width="40"
+              align="center"
+              src="https://www.flaticon.com/svg/static/icons/svg/3588/3588307.svg"
+            />
+
+            <span class="text-capitalize">{{bus.busName}}</span>
+          </h5>
+          <table id="dtHorizontalExample" class="table  table-responsive 
+          
+          {% if bus.isRunning %}
+          table-success
+          {% else %}
+          table-danger  
+          {% endif %}
+          
+           text-capitalize ">
+  <thead class="text-nowrap">
+    <tr class="card-body">
+      <th style="white-space:nowrap;" scope="col">Bus No.</th>
+      <th scope="col">Agency Name</th>
+      <th scope="col">From</th>
+      <th scope="col">To</th>
+      <th  scope="col">Departure Time</th>
+      <th scope="col">Arrival Time</th>
+      <th scope="col">Reaches On Day</th>
+      <th scope="col">Ac/Non Ac</th>
+      <th scope="col">Type</th>
+      <th scope="col">Seats </th>
+      <th scope="col">Fare</th>
+      <th scope="col" >Edit</th>
+      <th scope="col">Runnig Days</th>
+    </tr>
+  </thead>
+    <tbody>
+
+      <tr class="  text-nowrap">
+      <th scope="row"> <i class="fas fa-bus red-text"></i> {{bus.busNo}}</th>
+      <td class="card bg-warning black-text">{{bus.operatorAgencyName}}</td>
+      <td class=""> <i class="fas fa-building"></i> {{bus.goesFrom}}</td>
+      <td class=""><i class="fas fa-building"></i> {{bus.goesTo}}</td>
+      <td>
+      {% if bus.isDayDeparture %}
+      <i class="fas fa-sun white-text"></i>
+      {% else %}
+      <i class="fas fa-moon grey-text"></i>
+      {% endif %}
+        &nbsp; {{bus.departureTime}}</td>
+      <td>
+      {% if bus.isDayArrival %}
+      <i class="fas fa-sun white-text"></i>
+      {% else %}
+
+      <i class="fas fa-moon grey-text"></i>
+      {% endif %}
+        &nbsp; 
+      {{bus.arrivalTime}}</td>
+      <td>Day {{bus.rachesOnDay}}</td>
+      <td class="card  bg-dark">{% if bus.isAc %}<strong class="text-light">AC</strong> {% else %}<strong class="text-warning">Non-AC</strong> {% endif %}</td>
+      <td >{% if bus.isSleeper %}<i class="fas fa-bed amber-text"></i> Sleeper {% else %}<i class="fas fa-chair teal-text"></i> Seater{% endif %}</td>
+      <td>{{bus.availableSeatsCount}}</td>
+      <td><i class="fas fa-money-bill-alt pink-text"></i> ₹ {{bus.fare}}</td>
+      <td>
+      {% if bus.availableSeatsCount >= 1 %}
+      <a href="" class="text-danger" data-toggle="modal" data-target="#sideModalTR">
+      
+
+      <strong class="text-danger ">
+      <i class="fas fa-marker mr-1"></i>Edit
+      </strong>
+      {% else %}
+      <i class="fas fa-times red-text"></i>
+
+      <strong class="text-danger "> Not Available
+      </strong>
+      <a href="book/{{customerId}}/{{bus.busId}}/{{searchedDate}}" class="text-danger disabled"
+      >
+      {% endif %}
+      
+      
+      </a></td>
+      <td>
+      <i class="fas fa-calendar-alt"></i> &nbsp;
+        {% if 'monday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">M</small>
+          {% endif %}
+
+        {% if 'tuesday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">TU</small>
+        {% endif %}
+        
+
+        {% if 'wednesday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">W</small>
+        {% endif %}
+        {% if 'thursday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">TH</small>
+         {% endif %} 
+
+        {% if 'friday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">F</small>
+         {% endif %} 
+
+        {% if 'saturday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">SA</small>
+        {% endif %}
+
+        {% if 'sunday' in bus.runsOn %}
+        <small class="text-primary font-weight-bold">SU</small>
+        {% endif %}
+
+      </td>
+    </tr>
+
+
+    
+  </tbody>
+</table>
+        </div>
+      </div>
+    </div>
+  </div>
+    {% endfor %}
+
+    {% if hasNoResult %}
+     <center >
+     <div class="mt-5">
+    <img class="img-fluid"
+    src="https://media.giphy.com/media/l0ExhgDYmserkFabm/giphy.gif"
+
+    > </div>
+        <h5 >You have no busses in your account !</h5>
+     </center>
+    
+    {% endif %}
+</div>
+
+
+<div class="modal fade right" id="sideModalTR" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+  aria-hidden="true">
+ <div class="modal-dialog modal-side modal-top-right" role="document">
+
+
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title w-100" id="myModalLabel">Feature unavailable</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        We are currently working on this feature and will let you know when it is available
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Ok</button>
+
+      </div>
     </div>
   </div>
 </div>
-
+<!-- Side Modal Top Right -->
 {% endblock body%}

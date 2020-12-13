@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from home.models import Customer, Bus, Operator, Ticket, Seats
 from django.contrib import messages
 from datetime import datetime
-from home.custom_models import Result, Bookings, UserAcount
+from home.custom_models import Result, Bookings, UserAcount, OperatorAccount, BusOperatorResult, checkRunning, OperatorDashboardInfo
 from django.shortcuts import render
 from yatram.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
@@ -131,14 +131,24 @@ def operatorDashboard(request):
 
     if operator_id == None:
         return redirect("/operator")
-
+    busses = []
+    allTickets = []
     context = {}
     operator = Operator.objects.get(operator_id=operator_id)
     try:
         busList = Bus.objects.filter(operator_id=str(operator.operator_id))
         print(busList)
+        for bus in busList:
+            busses.append(bus)
+
         total_bus = len(busList)
-        print(busList.first())
+        tickets = Ticket.objects.filter(operator_id=operator.operator_id)
+
+        for ticket in tickets:
+            allTickets.append(ticket)
+
+        # print(busList.first())
+
     except Exception as e:
         print("the exception is", e)
         total_bus = 0
@@ -147,6 +157,9 @@ def operatorDashboard(request):
     email = operator.email
     agencyName = operator.agencyName
     firstName = name.split()[0]
+    stats = OperatorDashboardInfo(operator, busses, allTickets)
+    context['stats'] = stats
+
     context['name'] = name
     context['email'] = email
     context['operator_id'] = operator_id
@@ -256,7 +269,8 @@ def userDashboard(request):
         toLocation = toLocation.lower()
         print(dayOfJourney)
         try:
-            bus = Bus.objects.filter(goesfrom=fromLocation, goesTo=toLocation)
+            bus = Bus.objects.filter(
+                goesfrom=fromLocation, goesTo=toLocation, isRunning=True)
             if len(bus) == 0:
                 messages.warning(request, "No bus found on this route ! ")
             else:
@@ -667,11 +681,13 @@ def reservations(request, operatorId):
         operator = Operator.objects.get(operator_id=operatorId)
         tickets = Ticket.objects.filter(operator_id=operator.operator_id)
         bookings = []
-
-        for ticket in tickets:
-            bus = Bus.objects.get(busId=ticket.busId)
-            customer = Customer.objects.get(customer_id=ticket.passengerId)
-            bookings.append(Bookings(ticket, customer, bus, operator))
+        try:
+            for ticket in tickets:
+                bus = Bus.objects.get(busId=ticket.busId)
+                customer = Customer.objects.get(customer_id=ticket.passengerId)
+                bookings.append(Bookings(ticket, customer, bus, operator))
+        except Exception as e:
+            print(e)
 
         context['name'] = operator.name
         context['tickets'] = tickets
@@ -697,13 +713,15 @@ def operatorFilterCompleted(request, operatorId):
         operator = Operator.objects.get(operator_id=operatorId)
         tickets = Ticket.objects.filter(operator_id=operator.operator_id)
         bookings = []
-
-        for ticket in tickets:
-            bus = Bus.objects.get(busId=ticket.busId)
-            customer = Customer.objects.get(customer_id=ticket.passengerId)
-            b = Bookings(ticket, customer, bus, operator)
-            if b.isCompleted == True:
-                bookings.append(b)
+        try:
+            for ticket in tickets:
+                bus = Bus.objects.get(busId=ticket.busId)
+                customer = Customer.objects.get(customer_id=ticket.passengerId)
+                b = Bookings(ticket, customer, bus, operator)
+                if b.isCompleted == True:
+                    bookings.append(b)
+        except Exception as e:
+            print(e)
 
         context['name'] = operator.name
         context['tickets'] = tickets
@@ -729,13 +747,15 @@ def operatorFilterCancelled(request, operatorId):
         operator = Operator.objects.get(operator_id=operatorId)
         tickets = Ticket.objects.filter(operator_id=operator.operator_id)
         bookings = []
-
-        for ticket in tickets:
-            bus = Bus.objects.get(busId=ticket.busId)
-            customer = Customer.objects.get(customer_id=ticket.passengerId)
-            b = Bookings(ticket, customer, bus, operator)
-            if b.isTicketCancelled == True:
-                bookings.append(b)
+        try:
+            for ticket in tickets:
+                bus = Bus.objects.get(busId=ticket.busId)
+                customer = Customer.objects.get(customer_id=ticket.passengerId)
+                b = Bookings(ticket, customer, bus, operator)
+                if b.isTicketCancelled == True:
+                    bookings.append(b)
+        except Exception as e:
+            print(e)
 
         context['name'] = operator.name
         context['tickets'] = tickets
@@ -761,13 +781,15 @@ def operatorFilterBooked(request, operatorId):
         operator = Operator.objects.get(operator_id=operatorId)
         tickets = Ticket.objects.filter(operator_id=operator.operator_id)
         bookings = []
-
-        for ticket in tickets:
-            bus = Bus.objects.get(busId=ticket.busId)
-            customer = Customer.objects.get(customer_id=ticket.passengerId)
-            b = Bookings(ticket, customer, bus, operator)
-            if b.isCompleted == False and b.isTicketCancelled == False:
-                bookings.append(b)
+        try:
+            for ticket in tickets:
+                bus = Bus.objects.get(busId=ticket.busId)
+                customer = Customer.objects.get(customer_id=ticket.passengerId)
+                b = Bookings(ticket, customer, bus, operator)
+                if b.isCompleted == False and b.isTicketCancelled == False:
+                    bookings.append(b)
+        except Exception as e:
+            print(e)
 
         context['name'] = operator.name
         context['tickets'] = tickets
@@ -839,7 +861,17 @@ def myBusses(request, operatorId):
         operator = Operator.objects.get(operator_id=operatorId)
         context['operator'] = operator
         context['name'] = operator.name
-
+        results = []
+        try:
+            buses = Bus.objects.filter(operator_id=operator.operator_id)
+            for bus in buses:
+                results.append(BusOperatorResult(bus))
+        except Exception as e:
+            print(e)
+        context['results'] = results
+        context['hasNoResult'] = False
+        if len(results) == 0:
+            context['hasNoResult'] = True
     except Exception as e:
         print(e)
 
@@ -861,15 +893,17 @@ def operatorAccount(request, operatorId):
 
         editEmail = request.POST.get('editEmail')
         if editEmail and editEmail != operator.email:
-            customer.email = editEmail
+            operator.email = editEmail
             try:
-                customer.save()
-                return redirect('/operator/dashboard/account/' + operator.operator_id)
+                operator.save()
                 messages.success(request, "Saved Changes ! ")
+
+                return redirect('/operator/dashboard/account/' + str(operator.operator_id))
 
             except Exception as e:
                 print(e)
-                messages.warning('Something failed ! please try again later ')
+                messages.warning(
+                    request, 'Something failed while saving changes ! please try again later ')
 
         # edit email ends here
         try:
@@ -882,16 +916,97 @@ def operatorAccount(request, operatorId):
 
         except Exception as e:
             print(e)
-        account = UserAcount(customer, resultTickets)
+        account = OperatorAccount(operator, resultTickets)
         context['account'] = account
         if len(account.upcommingBookings) > 0:
             context['hasUpcomming'] = True
         else:
             context['hasUpcomming'] = False
 
-        return render(request, 'account.html', context)
+        return render(request, 'operatorAccount.html', context)
 
     except Exception as e:
         print(e)
         return redirect('/operator/dashboard')
         messages.warning(request, 'something failed ! please try later ')
+
+
+def stopBus(request, operatorId, busId):
+    try:
+        operator = Operator.objects.get(operator_id=operatorId)
+        bus = Bus.objects.get(busId=busId)
+        # cancel all tickets which are booked
+        try:
+            tickets = Ticket.objects.filter(busId=bus.busId)
+            for ticket in tickets:
+                ticketDb = Ticket.objects.get(ticketId=ticket.ticketId)
+                thisTicket = checkRunning(ticket, bus)
+                ticketDb.isBusRunning = False
+                ticketDb.save()
+                if thisTicket.isTicketCancelled == False and thisTicket.isCompleted == False:
+                    customer = Customer.objects.get(
+                        customer_id=ticket.passengerId)
+                    customer.wallet += ticket.totalFare
+                    operator.cancelledAmount += ticket.totalFare
+                    operator.amountInWallet -= ticket.totalFare
+                    ticketDb.isCancelled = True
+                    ticketDb.save()
+                    customer.save()
+                    operator.save()
+            bus.isRunning = False
+            bus.save()
+        except Exception as e:
+            print(e)
+    except Exception as e:
+        print(e)
+
+    return redirect('/operator/dashboard/mybuses/' + str(operator.operator_id))
+
+
+def startBus(request, operatorId, busId):
+    operator = Operator.objects.get(operator_id=operatorId)
+
+    try:
+        bus = Bus.objects.get(busId=busId)
+        bus.isRunning = True
+        bus.save()
+
+    except Exception as e:
+        print(e)
+        messages.warning(request, 'Something failed ! please try again later ')
+
+    return redirect('/operator/dashboard/mybuses/' + str(operator.operator_id))
+
+
+def deleteBus(request, operatorId, busId):
+    try:
+        operator = Operator.objects.get(operator_id=operatorId)
+        bus = Bus.objects.get(busId=busId)
+        # cancel all tickets which are booked
+        try:
+            tickets = Ticket.objects.filter(busId=bus.busId)
+            for ticket in tickets:
+                ticketDb = Ticket.objects.get(ticketId=ticket.ticketId)
+                thisTicket = checkRunning(ticket, bus)
+                ticketDb.isBusRunning = False
+                ticketDb.save()
+                if thisTicket.isTicketCancelled == False and thisTicket.isCompleted == False:
+                    customer = Customer.objects.get(
+                        customer_id=ticket.passengerId)
+                    customer.wallet += ticket.totalFare
+                    operator.cancelledAmount += ticket.totalFare
+                    operator.amountInWallet -= ticket.totalFare
+                    ticketDb.isCancelled = True
+                    ticketDb.save()
+                    customer.save()
+                    operator.save()
+            bus.isRunning = False
+            bus.delete()
+        except Exception as e:
+            print(e)
+        return redirect('/operator/dashboard/mybuses/' + str(operator.operator_id))
+
+    except Exception as e:
+        print(e)
+        messages.warning(request, 'Something failed ! please try again later')
+        return redirect('/operator/dashboard/mybuses/' + str(operator.operator_id))
