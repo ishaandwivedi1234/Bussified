@@ -333,6 +333,7 @@ def bookTickets(request, customerId, busId, date):
         context['bus'] = Result(bus, seatMatrix)
         context['customer'] = customer
         context['dateOfJourney'] = date
+        context['customerId'] = customerId
 
         # booking logic
         seatsSelected = request.POST.getlist('seatsSelected')
@@ -379,7 +380,9 @@ def bookTickets(request, customerId, busId, date):
                         seat.seatsBooked = alreadyBooked
                         seat.save()
 
-                    messages.success(request, "Proceeding to payment..")
+                    messages.success(
+                        request, "Done ! Ticket Booked Successfully..")
+                    return redirect('/dashboard/mybookings/'+str(customerId)+'/booked')
 
                 except Exception as e:
                     print(e)
