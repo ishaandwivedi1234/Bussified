@@ -238,3 +238,13 @@ class OperatorDashboardInfo():
                 self.walletFilled += ticket.totalFare
             if self.today == self.journeyDate:
                 self.runsToday += 1
+
+
+class Payments():
+    def __init__(self, ticketAmmount, customer):
+        self.customerWallet = customer.wallet
+        self.customerHearts = customer.hearts
+
+        self.conversionRate = 0.02
+        self.ammountInRupee = ticketAmmount
+        self.ammountInHearts = self.ammountInRupee * self.conversionRate

@@ -1,0 +1,68 @@
+{% include 'loggedBase.html' %} {% block body %}
+
+<br />
+
+<div class="container">
+  <div class="row">
+    <div class="container my-5 py-5 z-depth-1">
+      <!--Section: Content-->
+      <section class="text-center px-md-5 mx-md-5 dark-grey-text">
+        <h4 class="font-weight-bold">
+          Spend some
+          <img
+            class="img-fluid"
+            height="60"
+            width="50"
+            src="https://www.flaticon.com/svg/static/icons/svg/2950/2950243.svg"
+          />
+
+          to book the ticket
+        </h4>
+        <h4 class="">You must have enough hearts to pay</h4>
+
+        <a
+          class="btn btn-outline-success btn-md mt-3 waves-effect"
+          href="#"
+          role="button"
+          >Pay Now</a
+        >
+      </section>
+      <!--Section: Content-->
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6 col-md-12 mt-2">
+      <div class="card">
+        <div class="card-header">Pay using wallet</div>
+        <div class="card-body">
+          <h5 class="card-title pb-1">
+            Wallet Balance
+            <span class="font-weight-bold green-text"
+              >₹ {{customer.wallet}}</span
+            >
+          </h5>
+          <p class="card-text">
+            An ammount of {{2000}} will be deducted from your wallet
+          </p>
+          <a href="#" class="btn btn-primary">Pay Now</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-6 col-md-12 mt-2">
+      <div class="mt-1 card">
+        <div class="card-header">Pay hearts</div>
+        <div class="card-body">
+          <h5 class="card-title">
+            Hearts Available
+            <span class="font-weight-bold pink-text">{{customer.hearts}}</span
+            ><i class="fab fa-gratipay ml-1 red-text"></i>
+          </h5>
+          <p class="card-text">{{40}} hearts will be deducted</p>
+          <a href="#" class="btn btn-primary">Pay Now</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock body %}

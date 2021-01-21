@@ -7,8 +7,9 @@ from django.shortcuts import render
 from yatram.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 
-# Create your views here.
 
+
+# Create your views here.
 
 def index(request):
     password = request.POST.get("password")
@@ -1013,3 +1014,18 @@ def deleteBus(request, operatorId, busId):
         print(e)
         messages.warning(request, 'Something failed ! please try again later')
         return redirect('/operator/dashboard/mybuses/' + str(operator.operator_id))
+
+
+def payment(request, customerId):
+
+    context = {}
+    try:
+        customer = Customer.objects.get(customer_id=customerId)
+        context['name'] = customer.name
+        context['email'] = customer.email
+        context['customer'] = customer
+        context['customerId'] = customer.customer_id
+
+    except Exception as e:
+        print(e)
+    return render(request, 'payment.html', context)

@@ -55,4 +55,6 @@ urlpatterns = [
          views.startBus, name="startBus"),
     path('operator/dashboard/bookings/delete/<str:operatorId>/<str:busId>',
          views.deleteBus, name="deleteBus"),
+
+    path('dashboard/payments/<str:customerId>/', views.payment, name="payment")
 ]

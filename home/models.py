@@ -10,6 +10,7 @@ class Customer(models.Model):
     email = models.CharField(max_length=128, unique=True)
     password = models.CharField(max_length=128)
     wallet = models.FloatField(default=0)
+    hearts = models.FloatField(default=200)
 
     def __str__(self):
         return self.name
@@ -85,6 +86,7 @@ class Ticket(models.Model):
     isBusRunning = models.BooleanField()
     operator_id = models.CharField(max_length=10000)
     isCancelled = models.BooleanField(default=False)
+    isPaid = models.BooleanField(default=False)
 
     def __str__(self):
         return self.passangerName
@@ -93,7 +95,7 @@ class Ticket(models.Model):
 class Seats(models.Model):
     busId = models.CharField(max_length=10000)
     operator_id = models.CharField(max_length=10000)
-    date = models.DateField(unique=True)
+    date = models.DateField(unique=False)
     seatsBooked = ArrayField(
         ArrayField(
             models.CharField(max_length=10)
